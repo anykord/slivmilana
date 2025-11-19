@@ -1,11 +1,15 @@
 {
-  "cleanUrls": true,
-  "trailingSlash": false,
-  "rewrites": [
+  "version": 2,
+  "builds": [
     {
-      "source": "/pages/(.*)",
-      )",
-      "destination": "/pages/$1.html"
+      "src": "**/*.html",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
     }
   ],
   "headers": [
@@ -14,7 +18,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "s-maxage=0, max-age=0, stale-while-revalidate=59"
+          "value": "s-maxage=0, max-age=0"
         }
       ]
     }
