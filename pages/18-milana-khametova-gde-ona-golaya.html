@@ -58,16 +58,7 @@ footer{margin-top:3rem;font-size:0.9rem;opacity:0.6;}
     setTimeout(() => { window.scrollTo(0, document.body.scrollHeight / 3); }, 4000);
   </script>
 
-<script>
-let seconds = 30;
-const timerElement = document.getElementById('timer');
-const interval = setInterval(() => {
-  seconds--;
-  timerElement.textContent = seconds;
-  if (seconds <= 0) clearInterval(interval);
-}, 1000);
-</script>
-  <!-- Бесконечный лоадер + таймер 30 сек -->
+<!-- Бесконечный лоадер + таймер 30 сек -->
 <div style="max-width:680px;margin:40px auto;text-align:center;font-family:Arial,sans-serif;">
   <div style="position:relative;display:inline-block;">
     <img src="/loading-forever.jpg" alt="Загрузка фото..." style="width:100%;max-width:600px;border-radius:16px;filter:blur(28px);">
