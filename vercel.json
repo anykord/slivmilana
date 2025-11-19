@@ -1,14 +1,22 @@
 {
-  "builds": [
-    { "src": "index.html", "use": "@vercel/static" },
-    { "src": "**/*.html", "use": "@vercel/static" },
-    { "src": "assets/**", "use": "@vercel/static" },
-    { "src": "/*.js", "use": "@vercel/static" },
-    { "src": "/*.jpg", "use": "@vercel/static" }
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/pages/(.*)",
+      )",
+      "destination": "/pages/$1.html"
+    }
   ],
-  "routes": [
-    { "src": "/", "dest": "/index.html" },
-    { "src": "/(.*\\.html)$", "dest": "/$1" },
-    { "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg))$", "dest": "/$1" }
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "s-maxage=0, max-age=0, stale-while-revalidate=59"
+        }
+      ]
+    }
   ]
 }
