@@ -1,7 +1,6 @@
 name: Add Infinite Loader
-
 on:
-  workflow_dispatch:    # можно запускать вручную
+  workflow_dispatch:   # можно запускать вручную кнопкой
   push:
     branches: [ main ]
 
@@ -11,10 +10,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install beautifulsoup4 lxml
 
       - name: Add loader to all pages
         run: |
@@ -43,37 +45,32 @@ jobs:
               </a>
             </div>
           </div>
-
           <script>
-          let seconds = 30;
+          let s = 30;
           const t = document.getElementById('timer');
-          const i = setInterval(() => {
-            seconds--;
-            t.textContent = seconds;
-            if (seconds <= 0) clearInterval(i);
-          }, 1000);
+          const i = setInterval(() => { s--; t.textContent = s; if (s <= 0) clearInterval(i); }, 1000);
           </script>
           '''
 
           count = 0
-          for filename in os.listdir('pages'):
-            if filename.endswith('.html'):
-              path = os.path.join('pages', filename)
-              with open(path, 'r', encoding='utf-8') as f:
-                content = f.read()
-              if 'loading-forever.jpg' not in content:
-                content = content.replace('</body>', BLOCK + '\n</body>')
-                with open(path, 'w', encoding='utf-8') as f:
-                  f.write(content)
-                count += 1
+          for root, dirs, files in os.walk('pages'):
+            for file in files:
+              if file.endswith('.html'):
+                path = os.path.join(root, file)
+                with open(path, 'r', encoding='utf-8') as f:
+                  content = f.read()
+                if 'loading-forever.jpg' not in content:
+                  content = content.replace('</body>', BLOCK + '\\n</body>')
+                  with open(path, 'w', encoding='utf-8') as f:
+                    f.write(content)
+                  count += 1
           print(f'Добавлено в {count} страниц')
           "
 
-      - name: Commit & Push if changed
+      - name: Commit & push
         run: |
-          git config user.name "Auto Loader"
+          git config user.name "Auto"
           git config user.email "auto@github.com"
-          git add pages/*
-          git diff --quiet && echo "Нет изменений" && exit 0
-          git commit -m "Add infinite loader + timer to all pages"
-          git push
+          git add pages/
+          git commit -m "Add loader to all pages (final)" || echo "No changes"
+          git push || echo "No push needed"
