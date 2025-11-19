@@ -1,10 +1,14 @@
 {
   "builds": [
-    { "src": "public/**", "use": "@vercel/static" }
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "**/*.html", "use": "@vercel/static" },
+    { "src": "assets/**", "use": "@vercel/static" },
+    { "src": "/*.js", "use": "@vercel/static" },
+    { "src": "/*.jpg", "use": "@vercel/static" }
   ],
   "routes": [
     { "src": "/", "dest": "/index.html" },
-    { "src": "/about.html", "dest": "/about.html" },
-    { "src": "/contact.html", "dest": "/contact.html" }
+    { "src": "/(.*\\.html)$", "dest": "/$1" },
+    { "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg))$", "dest": "/$1" }
   ]
 }
