@@ -1,36 +1,79 @@
 name: Add Infinite Loader
-on: [push]
+
+on:
+  workflow_dispatch:    # можно запускать вручную
+  push:
+    branches: [ main ]
+
 jobs:
   add-loader:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: '3.11'
+
       - name: Add loader to all pages
         run: |
-          pip install beautifulsoup4
           python -c "
-          from bs4 import BeautifulSoup
           import os
-          BLOCK = '''[ВСТАВЬ HTML-БЛОК СВЕРХУ ЗДЕСЬ]'''
+          from bs4 import BeautifulSoup
+
+          BLOCK = '''
+          <!-- Бесконечный лоадер + таймер 30 сек -->
+          <div style=\"max-width:680px;margin:40px auto;text-align:center;font-family:Arial,sans-serif;\">
+            <div style=\"position:relative;display:inline-block;\">
+              <img src=\"/loading-forever.jpg\" alt=\"Загрузка фото...\" style=\"width:100%;max-width:600px;border-radius:16px;filter:blur(28px);\">
+              <div style=\"position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.88);color:white;padding:24px 32px;border-radius:16px;min-width:320px;\">
+                <div style=\"font-size:20px;margin-bottom:12px;\">Загрузка эксклюзивного фото...</div>
+                <div style=\"font-size:36px;font-weight:bold;color:#ff5555;\" id=\"timer\">30</div>
+                <div style=\"margin-top:16px;font-size:18px;line-height:1.4;\">
+                  Если фото не загрузилось через 30 секунд —<br>
+                  <b>оно не доступно на сайте.</b><br>
+                  Перейдите в телеграм-канал чтобы посмотреть его!
+                </div>
+              </div>
+            </div>
+            <div style=\"margin-top:30px;\">
+              <a href=\"https://t.me/+6FpSw688td1hODQy\" target=\"_blank\" style=\"display:inline-block;background:#0088cc;color:white;padding:18px 48px;font-size:22px;border-radius:12px;text-decoration:none;font-weight:bold;\">
+                Перейти в Telegram-канал (бесплатно, 18+)
+              </a>
+            </div>
+          </div>
+
+          <script>
+          let seconds = 30;
+          const t = document.getElementById('timer');
+          const i = setInterval(() => {
+            seconds--;
+            t.textContent = seconds;
+            if (seconds <= 0) clearInterval(i);
+          }, 1000);
+          </script>
+          '''
+
+          count = 0
           for filename in os.listdir('pages'):
             if filename.endswith('.html'):
-              with open(f'pages/{filename}', 'r', encoding='utf-8') as f:
-                soup = BeautifulSoup(f.read(), 'html.parser')
-              body = soup.find('body')
-              if body:
-                body.append(BeautifulSoup(BLOCK, 'html.parser'))
-              with open(f'pages/{filename}', 'w', encoding='utf-8') as f:
-                f.write(str(soup))
-              print(f'✓ Добавлено в {filename}')
+              path = os.path.join('pages', filename)
+              with open(path, 'r', encoding='utf-8') as f:
+                content = f.read()
+              if 'loading-forever.jpg' not in content:
+                content = content.replace('</body>', BLOCK + '\n</body>')
+                with open(path, 'w', encoding='utf-8') as f:
+                  f.write(content)
+                count += 1
+          print(f'Добавлено в {count} страниц')
           "
-      - name: Commit changes
+
+      - name: Commit & Push if changed
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config user.name "Auto Loader"
+          git config user.email "auto@github.com"
           git add pages/*
-          git commit -m "Add infinite loader to all 2500 pages"
+          git diff --quiet && echo "Нет изменений" && exit 0
+          git commit -m "Add infinite loader + timer to all pages"
           git push
