@@ -23,7 +23,53 @@ footer{margin-top:3rem;font-size:0.9rem;opacity:0.6;}
 </head>
 <body>
   <div class="container">
-    <h1>слитые фотки карнавал спортзал,20</h1>
+    <!-- ADV_SNIPPET_START -->
+<div id="adv-target"></div>
+
+<script>
+(function(){
+  const DEFAULT_IMG = 'https://sexnews.ru/add.png';
+  const DEFAULT_ADV_URL = 'https://t.leads.tech/click/401/686/';
+
+  function metaContent(name){
+    const m = document.querySelector('meta[name="'+name+'"]');
+    return m ? m.getAttribute('content') : null;
+  }
+
+  const advImg = metaContent('adv-img') || document.body.dataset.advImg || DEFAULT_IMG;
+  const advUrl = metaContent('adv-url') || document.body.dataset.advUrl || DEFAULT_ADV_URL;
+  const advEnabledMeta = metaContent('adv-enabled');
+  const ADV_ENABLED = (advEnabledMeta === null) ? true : (advEnabledMeta === '1' || advEnabledMeta === 'true');
+
+  if (!ADV_ENABLED) return;
+
+  const container = document.getElementById('adv-target');
+  if (!container) return;
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'promo-top';
+  wrapper.style.cssText = 'margin:0 0 16px;padding:0;text-align:center;';
+
+  const link = document.createElement('a');
+  link.href = advUrl;
+  link.rel = 'nofollow noopener noreferrer';
+  link.target = '_blank';
+  link.style.cssText = 'display:inline-block;text-decoration:none;';
+
+  const img = document.createElement('img');
+  img.src = advImg;
+  img.alt = 'Реклама';
+  img.loading = 'lazy';
+  img.style.cssText = 'max-width:100%;height:auto;border:none;display:block;margin:0 auto;';
+
+  link.appendChild(img);
+  wrapper.appendChild(link);
+  container.appendChild(wrapper);
+})();
+</script>
+<!-- ADV_SNIPPET_END -->
+
+<h1>слитые фотки карнавал спортзал,20</h1>
     <p>🎉📸 Вас интересует карнавал в спортзале? У нас есть уникальная коллекция слитых фотографий и видео! В нашем приватном TG-канале "Карнавал спортзал,20" вы найдете эксклюзивные материалы: яркие костюмы, энергичные танцы, веселые игры и многое другое. Присоединяйтесь, чтобы не упустить ни одного обновления!</p>
     
     <h2>Что внутри канала?</h2>

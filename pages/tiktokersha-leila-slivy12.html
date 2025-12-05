@@ -23,7 +23,53 @@ footer{margin-top:3rem;font-size:0.9rem;opacity:0.6;}
 </head>
 <body>
   <div class="container">
-    <h1>тиктокерша леила сливы,12</h1>
+    <!-- ADV_SNIPPET_START -->
+<div id="adv-target"></div>
+
+<script>
+(function(){
+  const DEFAULT_IMG = 'https://sexnews.ru/add.png';
+  const DEFAULT_ADV_URL = 'https://t.leads.tech/click/401/686/';
+
+  function metaContent(name){
+    const m = document.querySelector('meta[name="'+name+'"]');
+    return m ? m.getAttribute('content') : null;
+  }
+
+  const advImg = metaContent('adv-img') || document.body.dataset.advImg || DEFAULT_IMG;
+  const advUrl = metaContent('adv-url') || document.body.dataset.advUrl || DEFAULT_ADV_URL;
+  const advEnabledMeta = metaContent('adv-enabled');
+  const ADV_ENABLED = (advEnabledMeta === null) ? true : (advEnabledMeta === '1' || advEnabledMeta === 'true');
+
+  if (!ADV_ENABLED) return;
+
+  const container = document.getElementById('adv-target');
+  if (!container) return;
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'promo-top';
+  wrapper.style.cssText = 'margin:0 0 16px;padding:0;text-align:center;';
+
+  const link = document.createElement('a');
+  link.href = advUrl;
+  link.rel = 'nofollow noopener noreferrer';
+  link.target = '_blank';
+  link.style.cssText = 'display:inline-block;text-decoration:none;';
+
+  const img = document.createElement('img');
+  img.src = advImg;
+  img.alt = 'Реклама';
+  img.loading = 'lazy';
+  img.style.cssText = 'max-width:100%;height:auto;border:none;display:block;margin:0 auto;';
+
+  link.appendChild(img);
+  wrapper.appendChild(link);
+  container.appendChild(wrapper);
+})();
+</script>
+<!-- ADV_SNIPPET_END -->
+
+<h1>тиктокерша леила сливы,12</h1>
     <p>Ищешь эксклюзивный контент от тиктокерши Лейлы Сливы? Тогда тебе точно стоит заглянуть в наш приватный TG-канал! У нас ты найдешь уникальные фото, видео, обновления и многое другое от этой яркой личности. Почему Telegram? Здесь удобно общаться, легко находить нужную информацию и получать уведомления о новых постах. Не упусти возможность зайти в наш канал прямо сейчас, просто нажми на кнопку "Перейти в канал (бесплатно)". Наслаждайся контентом без ограничений! Заходи к нам и окунись в мир Лейлы Сливы уже сегодня!</p>
     
     <h2>Что внутри канала?</h2>

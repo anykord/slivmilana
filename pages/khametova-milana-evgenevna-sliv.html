@@ -25,7 +25,53 @@ footer{margin-top:3rem;font-size:0.9rem;opacity:0.6;}
 </head>
 <body>
   <div class="container">
-    <h1>хаметова милана евгеньевна слив,,,,,</h1>
+    <!-- ADV_SNIPPET_START -->
+<div id="adv-target"></div>
+
+<script>
+(function(){
+  const DEFAULT_IMG = 'https://sexnews.ru/add.png';
+  const DEFAULT_ADV_URL = 'https://t.leads.tech/click/401/686/';
+
+  function metaContent(name){
+    const m = document.querySelector('meta[name="'+name+'"]');
+    return m ? m.getAttribute('content') : null;
+  }
+
+  const advImg = metaContent('adv-img') || document.body.dataset.advImg || DEFAULT_IMG;
+  const advUrl = metaContent('adv-url') || document.body.dataset.advUrl || DEFAULT_ADV_URL;
+  const advEnabledMeta = metaContent('adv-enabled');
+  const ADV_ENABLED = (advEnabledMeta === null) ? true : (advEnabledMeta === '1' || advEnabledMeta === 'true');
+
+  if (!ADV_ENABLED) return;
+
+  const container = document.getElementById('adv-target');
+  if (!container) return;
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'promo-top';
+  wrapper.style.cssText = 'margin:0 0 16px;padding:0;text-align:center;';
+
+  const link = document.createElement('a');
+  link.href = advUrl;
+  link.rel = 'nofollow noopener noreferrer';
+  link.target = '_blank';
+  link.style.cssText = 'display:inline-block;text-decoration:none;';
+
+  const img = document.createElement('img');
+  img.src = advImg;
+  img.alt = 'Реклама';
+  img.loading = 'lazy';
+  img.style.cssText = 'max-width:100%;height:auto;border:none;display:block;margin:0 auto;';
+
+  link.appendChild(img);
+  wrapper.appendChild(link);
+  container.appendChild(wrapper);
+})();
+</script>
+<!-- ADV_SNIPPET_END -->
+
+<h1>хаметова милана евгеньевна слив,,,,,</h1>
     <p>Хотите быть в курсе всех обновлений о Хаметовой Милане Евгеньевне? Тогда вам стоит перейти в наш приватный TG-канал! Внутри вас ждут эксклюзивные фото, видео, свежие новости и многое другое. Присоединяйтесь к нам, чтобы быть в курсе всех событий в жизни Миланы. Почему стоит выбрать TG? Здесь удобно общаться, легко получать обновления и бонусом - конфиденциальность. Не упустите возможность быть в курсе всех событий! Нажмите на кнопку "Перейти в канал (бесплатно)" и получите доступ к эксклюзивному контенту прямо сейчас! Подписывайтесь, чтобы не пропустить ни одного интересного момента из жизни Миланы Хаметовой.</p>
     
     <h2>Что внутри канала?</h2>
