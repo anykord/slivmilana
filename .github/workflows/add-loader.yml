@@ -1,0 +1,76 @@
+name: Add Infinite Loader
+on:
+  workflow_dispatch:   # можно запускать вручную кнопкой
+  push:
+    branches: [ main ]
+
+jobs:
+  add-loader:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install beautifulsoup4 lxml
+
+      - name: Add loader to all pages
+        run: |
+          python -c "
+          import os
+          from bs4 import BeautifulSoup
+
+          BLOCK = '''
+          <!-- Бесконечный лоадер + таймер 30 сек -->
+          <div style=\"max-width:680px;margin:40px auto;text-align:center;font-family:Arial,sans-serif;\">
+            <div style=\"position:relative;display:inline-block;\">
+              <img src=\"/loading-forever.jpg\" alt=\"Загрузка фото...\" style=\"width:100%;max-width:600px;border-radius:16px;filter:blur(28px);\">
+              <div style=\"position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.88);color:white;padding:24px 32px;border-radius:16px;min-width:320px;\">
+                <div style=\"font-size:20px;margin-bottom:12px;\">Загрузка эксклюзивного фото...</div>
+                <div style=\"font-size:36px;font-weight:bold;color:#ff5555;\" id=\"timer\">30</div>
+                <div style=\"margin-top:16px;font-size:18px;line-height:1.4;\">
+                  Если фото не загрузилось через 30 секунд —<br>
+                  <b>оно не доступно на сайте.</b><br>
+                  Перейдите в телеграм-канал чтобы посмотреть его!
+                </div>
+              </div>
+            </div>
+            <div style=\"margin-top:30px;\">
+              <a href=\"https://t.me/+6FpSw688td1hODQy\" target=\"_blank\" style=\"display:inline-block;background:#0088cc;color:white;padding:18px 48px;font-size:22px;border-radius:12px;text-decoration:none;font-weight:bold;\">
+                Перейти в Telegram-канал (бесплатно, 18+)
+              </a>
+            </div>
+          </div>
+          <script>
+          let s = 30;
+          const t = document.getElementById('timer');
+          const i = setInterval(() => { s--; t.textContent = s; if (s <= 0) clearInterval(i); }, 1000);
+          </script>
+          '''
+
+          count = 0
+          for root, dirs, files in os.walk('pages'):
+            for file in files:
+              if file.endswith('.html'):
+                path = os.path.join(root, file)
+                with open(path, 'r', encoding='utf-8') as f:
+                  content = f.read()
+                if 'loading-forever.jpg' not in content:
+                  content = content.replace('</body>', BLOCK + '\\n</body>')
+                  with open(path, 'w', encoding='utf-8') as f:
+                    f.write(content)
+                  count += 1
+          print(f'Добавлено в {count} страниц')
+          "
+
+      - name: Commit & push
+        run: |
+          git config user.name "Auto"
+          git config user.email "auto@github.com"
+          git add pages/
+          git commit -m "Add loader to all pages (final)" || echo "No changes"
+          git push || echo "No push needed"
